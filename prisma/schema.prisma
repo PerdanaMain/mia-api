@@ -1,0 +1,40 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model amanat_users {
+  user_id       Int       @id @default(autoincrement())
+  username      String?   @db.VarChar(100)
+  user_fullname String?   @db.VarChar(100)
+  user_nip      Int?
+  user_email    String?   @db.VarChar(100)
+  user_jabatan  String?   @db.VarChar(100)
+  hak_akses_id  Int?
+  sub_unit_id   Int?
+  afdeling_id   Int?
+  user_pass     String?   @db.VarChar(255)
+  created_at    DateTime  @default(now()) @db.Timestamp(0)
+  updated_at    DateTime? @default(now()) @db.DateTime(0)
+
+  amanat_unit        amanat_unit? @relation(fields: [amanat_unitUnit_id], references: [unit_id])
+  amanat_unitUnit_id Int?
+}
+
+model amanat_unit {
+  unit_id                    Int       @id @default(autoincrement())
+  unit_desc                  String?   @db.VarChar(100)
+  unit_kode                  String?   @db.VarChar(100)
+  unit_tipe                  Int?
+  id_region                  Int?
+  total_aset_sap             Int?
+  total_aset_teridentifikasi Int?
+  created_at                 DateTime  @default(now()) @db.Timestamp(0)
+  updated_at                 DateTime? @default(now()) @db.DateTime(0)
+
+  users amanat_users[]
+}
